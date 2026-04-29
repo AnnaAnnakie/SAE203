@@ -2,8 +2,10 @@
 
 :root{
     --space-indigo: #22223B;
+    --orange : #ec7515;
     --amber-glow: #FF9F1C;
     --mustard : #fad161;
+    --light-blue : #8cd1ff;
     --blue-bell : #409fdd;
     --yale-blue : #124668;
 
@@ -24,6 +26,7 @@ header{
     display: flex;
     padding: 1rem 3rem;
     justify-content: space-between;
+    align-items: center;
 
     #search-bar{
         display: flex;
@@ -42,6 +45,9 @@ header{
             width: 40vw;
             transition: border-color ease-in-out 0.2s, box-shadow ease-in-out 0.2s;
             outline: none;
+            &:hover{
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            }
             &:focus-visible, &:focus{
                 border-color: var(--blue-bell);
                 box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -67,36 +73,47 @@ header{
     }
 
 
-    nav{
+    #connexion {
         display: flex;
-        flex-wrap: nowrap;
         gap: 20px;
         align-items: center;
-        a{
+        a {
             align-items: center;
-            border-radius: 2rem;
+            border-radius: 1.5rem;
             display: flex;
-            font-size: 1.3em;
-            height: 4rem;
+            font-size: 1.2em;
+            height: 3rem;
             padding: 0 20px;
-            &#log-in{
-                color: var(--blue-bell);
-                border: 1px solid var(--blue-bell) ;
-                &:hover{
+            transition: color ease-in-out 0.2s, background-color ease-in-out 0.2s, border-color ease-in-out 0.2s;
 
-                    color: var(--yale-blue);
-                    border: 1px solid var(--yale-blue) ;
+            &#log-in {
+                color: var(--blue-bell);
+                border: 1px solid var(--blue-bell);
+
+                &:hover {
+                    background: var(--blue-bell);
+                    color: white;
+                }
+                &:active{
+                    background-color: var(--light-blue);
+                    border: 1px solid var(--light-blue);
                 }
             }
-            &#sign-up{
+
+            &#sign-up {
                 color: white;
                 background-color: var(--blue-bell);
-                &:hover{
+
+                &:hover {
                     background-color: var(--yale-blue);
+                }
+                &:active{
+                    background-color: var(--light-blue);
                 }
             }
         }
     }
+
 
 }
 

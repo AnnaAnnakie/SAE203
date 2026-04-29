@@ -3,7 +3,9 @@
 ?>
 
 <header>
-    <img src="assets/zest.svg" alt="logo" width="150px">
+    <a href="/sae203/">
+        <img src="assets/zest.svg" alt="logo" width="150px">
+    </a>
     <form action="" method="get" id="search-bar">
         <input type="text" class="input-group" name="query" placeholder="Rechercher...">
         <button type="submit">
@@ -14,8 +16,14 @@
         </button>
     </form>
     <nav>
-        <a href="" id="log-in">Se connecter</a>
-        <a href="" id="sign-up">S'inscrire</a>
+
+        <div id="connexion">
+            <a href="" id="log-in">Se connecter</a>
+            <a href="" id="sign-up">S'inscrire</a>
+        </div>
+        <div id="connected" hidden>
+        <p>test</p>
+        </div>
         <!--
         <a<?php if (isset($_SESSION['user'])): ?> href="" <?php else: ?> href="" <?php endif; ?> id="connexion">
             <?= $ernest ?>
