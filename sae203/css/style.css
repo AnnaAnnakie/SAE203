@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Molle:ital@1&display=swap');
+
+:root{
+    --space-indigo: #22223B;
+    --amber-glow: #FF9F1C;
+    --mustard : #fad161;
+    --blue-bell : #409fdd;
+    --yale-blue : #124668;
+
+    --black : #000;
+    --white : #fff;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: "Bricolage Grotesque", sans-serif;
+    a{
+        text-decoration: none;
+    }
+}
+
+header{
+    display: flex;
+    padding: 1rem 3rem;
+    justify-content: space-between;
+
+    #search-bar{
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin: 0 50px ;
+        border-radius: 2rem;
+        height: 4rem;
+        width: 40vw;
+        input{
+            font-size: 1.1em;
+            padding: 0 20px;
+            border: solid 2px var(--amber-glow);
+            border-radius: 2rem;
+            height: 4rem;
+            width: 40vw;
+            transition: border-color ease-in-out 0.2s, box-shadow ease-in-out 0.2s;
+            outline: none;
+            &:focus-visible, &:focus{
+                border-color: var(--blue-bell);
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            }
+        }
+        button{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            background-color: transparent;
+            border: none;
+            right: 0;
+            height: 4rem;
+            aspect-ratio: 1/1;
+            svg{
+                fill: var(--amber-glow);
+                width: 40%;
+                height: 40%;
+            }
+        }
+
+    }
+
+
+    nav{
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 20px;
+        align-items: center;
+        a{
+            align-items: center;
+            border-radius: 2rem;
+            display: flex;
+            font-size: 1.3em;
+            height: 4rem;
+            padding: 0 20px;
+            &#log-in{
+                color: var(--blue-bell);
+                border: 1px solid var(--blue-bell) ;
+                &:hover{
+
+                    color: var(--yale-blue);
+                    border: 1px solid var(--yale-blue) ;
+                }
+            }
+            &#sign-up{
+                color: white;
+                background-color: var(--blue-bell);
+                &:hover{
+                    background-color: var(--yale-blue);
+                }
+            }
+        }
+    }
+
+}
+

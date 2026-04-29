@@ -1,0 +1,29 @@
+# --- Sécurité ---
+# On ignore absolument les variables d'environnement
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- Dépendances ---
+# Si tu utilises Composer (PHP) ou NPM (JS) plus tard
+node_modules/
+
+
+# --- Système (OS) ---
+# Fichiers inutiles générés par Windows ou macOS
+.DS_Store
+Thumbs.db
+
+# --- IDE & Éditeurs ---
+# Configuration propre à ton éditeur (VS Code, PHPStorm...)
+.vscode/
+.idea/
+*.swp
+*.vscdb
+
+# --- Logs et Temporaires ---
+*.log
+tmp/
+

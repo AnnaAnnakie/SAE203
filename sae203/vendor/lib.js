@@ -1,0 +1,2 @@
+// VENI VIDI LIBRARY
+// ICI seront placées les bibliothèques externes
