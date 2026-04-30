@@ -1,12 +1,13 @@
-body{
+main{
     background-color: #f2f2f2;
+    padding: 2rem 0;
 }
 
 fieldset{
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin: 2rem auto;
+    margin: auto;
     width: 40rem;
     background-color: white;
     padding: 2rem 1rem;

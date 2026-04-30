@@ -27,7 +27,6 @@ header{
     padding: 1rem 3rem;
     justify-content: space-between;
     align-items: center;
-    background-color: white;
 
     #search-bar{
         display: flex;
