@@ -73,7 +73,7 @@ header{
     }
 
 
-    #connexion {
+    #connexion, #connected {
         display: flex;
         gap: 20px;
         align-items: center;
@@ -86,29 +86,18 @@ header{
             padding: 0 20px;
             transition: color ease-in-out 0.2s, background-color ease-in-out 0.2s, border-color ease-in-out 0.2s;
 
-            &#log-in {
+            &#log-in, &#logged {
                 color: var(--blue-bell);
                 border: 1px solid var(--blue-bell);
 
                 &:hover {
                     background: var(--blue-bell);
                     color: white;
+                    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
                 }
                 &:active{
                     background-color: var(--light-blue);
                     border: 1px solid var(--light-blue);
-                }
-            }
-
-            &#sign-up {
-                color: white;
-                background-color: var(--blue-bell);
-
-                &:hover {
-                    background-color: var(--yale-blue);
-                }
-                &:active{
-                    background-color: var(--light-blue);
                 }
             }
         }

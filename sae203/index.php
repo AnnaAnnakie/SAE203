@@ -1,5 +1,9 @@
 <?php
-    $query = "SELECT * FROM `sae203_user`";
+session_start();
+require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/php/utils.php";
+
+$query = "SELECT * FROM sae203_user where username = 'aaah' ";
+$result = getInfoDataBase($query);
 ?>
 
 <!DOCTYPE html>
@@ -10,8 +14,6 @@
     </head>
     <body>
         <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/header.php"; ?>
-
-        <p>This is an example of a simple HTML page with one paragraph.</p>
 
 
         <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/footer.php"; ?>
