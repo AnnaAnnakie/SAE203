@@ -23,7 +23,7 @@ $ernest = $_SESSION['user']['username'] ?? null;
             </div>
         <?php }else { ?>
             <div id="connected">
-                <a href="/sae203/logout.php" id="logged"> <?=$ernest?></a>
+                <a href="/sae203/profile.php" id="logged"> <?=$ernest?></a>
             </div>
         <?php } ?>
     </nav>
