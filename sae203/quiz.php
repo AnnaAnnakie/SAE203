@@ -7,11 +7,11 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
-$quizz = $_GET['quizzId'];
-$query = "SELECT * FROM sae203_quizz WHERE id = '$quizz'";
-$quizzInfos = getInfoDataBase($query)[0];
+$quiz = $_GET['quizId'];
+$query = "SELECT * FROM sae203_quiz WHERE id = '$quiz'";
+$quizInfos = getInfoDataBase($query)[0];
 
-$query = "SELECT * FROM sae203_question WHERE quizz = $quizz ";
+$query = "SELECT * FROM sae203_question WHERE quiz = $quiz ";
 $questions = getInfoDataBase($query);
 ?>
 
@@ -25,9 +25,9 @@ $questions = getInfoDataBase($query);
 <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/header.php"; ?>
 
 <main>
-    <h1>Quizz <?= $quizzInfos['name'] ?></h1>
+    <h1>quiz <?= $quizInfos['name'] ?></h1>
     <?php if (isset($questions[0])){
-        echo "<a href='questions.php?quizzId=<?= $quizz[0] ?>'>Commencer</a>";
+        echo "<a href='questions.php?quizId=<?= $quiz[0] ?>'>Commencer</a>";
      }else{
         echo "<p> Aucune question disponible</p>";
     }  ?>

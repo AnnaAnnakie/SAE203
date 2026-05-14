@@ -7,13 +7,13 @@ if(!isset($_SESSION['user'])){
     exit;
 }
 
-if (empty($_GET["quizzId"])) {
+if (empty($_GET["quizId"])) {
     header("Location: index.php");
     exit();
 } else {
-    $quizzId = $_GET['quizzId'];
+    $quizId = $_GET['quizId'];
 
-    $questionsTab = getInfoDataBase("SELECT * FROM sae203_question WHERE quizz = $quizzId");
+    $questionsTab = getInfoDataBase("SELECT * FROM sae203_question WHERE quiz = $quizId");
 
     $fullQuizData = [];
 
@@ -36,7 +36,7 @@ if (empty($_GET["quizzId"])) {
 <head>
     <title></title>
     <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-css.php"; ?>
-    <link rel="stylesheet" href="css/quizz.css">
+    <link rel="stylesheet" href="css/quiz.css">
 </head>
 <body>
 <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/header.php"; ?>

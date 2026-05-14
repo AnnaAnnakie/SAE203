@@ -3,7 +3,6 @@
 require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/php/utils.php";
 function connectUser($userId, $password) : string{
 
-    // Vérification de l'identifiant de connexion
     $query = "SELECT * FROM sae203_user where username = '$userId' or email = '$userId' ";
     $result = getInfoDataBase($query);
     if (empty($result)) {
