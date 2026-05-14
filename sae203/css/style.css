@@ -22,6 +22,10 @@
     }
 }
 
+main{
+    min-height: calc(100vh - 4rem - 2rem - 4rem);
+}
+
 header{
     display: flex;
     padding: 1rem 3rem;
@@ -106,3 +110,10 @@ header{
 
 }
 
+footer{
+    background-color: var(--blue-bell);
+    height: 4rem;
+    a{
+        color: white;
+    }
+}

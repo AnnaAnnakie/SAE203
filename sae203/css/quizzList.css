@@ -1,0 +1,18 @@
+main {
+    padding: 1rem 5rem;
+
+    #container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+
+        padding: 2rem 0;
+
+        .quiz-card {
+            padding: 1em;
+            border: 1px solid var(--yale-blue);
+            border-radius: 10px;
+
+        }
+    }
+}

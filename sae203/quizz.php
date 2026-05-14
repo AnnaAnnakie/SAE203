@@ -1,9 +1,18 @@
 <?php
+session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/php/utils.php";
+
+if (!isset($_SESSION['user'])) {
+    header("Location: /sae203/login.php");
+    exit;
+}
 
 $quizz = $_GET['quizzId'];
 $query = "SELECT * FROM sae203_quizz WHERE id = '$quizz'";
 $quizzInfos = getInfoDataBase($query)[0];
+
+$query = "SELECT * FROM sae203_question WHERE quizz = $quizz ";
+$questions = getInfoDataBase($query);
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +26,12 @@ $quizzInfos = getInfoDataBase($query)[0];
 
 <main>
     <h1>Quizz <?= $quizzInfos['name'] ?></h1>
-    <a href="questions.php?quizzId=<?= $quizz ?>">Commencer</a>
+    <?php if (isset($questions[0])){
+        echo "<a href='questions.php?quizzId=<?= $quizz[0] ?>'>Commencer</a>";
+     }else{
+        echo "<p> Aucune question disponible</p>";
+    }  ?>
+
 </main>
 
 <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/footer.php"; ?>

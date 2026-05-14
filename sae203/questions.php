@@ -1,5 +1,12 @@
 <?php
+session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/php/utils.php";
+
+if(!isset($_SESSION['user'])){
+    header("Location: /sae203/login.php");
+    exit;
+}
+
 if (empty($_GET["quizzId"])) {
     header("Location: index.php");
     exit();

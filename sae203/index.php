@@ -2,21 +2,29 @@
 session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/php/utils.php";
 
-$query = "SELECT * FROM sae203_user where username = 'aaah' ";
-$result = getInfoDataBase($query);
+if(isset($_SESSION['user'])){
+    header("Location: catalogue.php");
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Accueil</title>
-        <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-css.php"; ?>
-    </head>
-    <body>
-        <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/header.php"; ?>
+<head>
+    <title>Accueil</title>
+    <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-css.php"; ?>
+</head>
+<body>
+<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/header.php"; ?>
 
+<main>
+    <div>
+        <a href="login.php">Se connecter</a>
+    </div>
+</main>
 
-        <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/footer.php"; ?>
-    </body>
-    <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-js.php"; ?>
+<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/footer.php"; ?>
+</body>
+<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-js.php"; ?>
 </html>
