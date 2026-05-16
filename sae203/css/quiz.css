@@ -1,5 +1,4 @@
 main {
-    background-color: #f2f2f2;
     padding: 2rem 0;
 }
 
@@ -24,13 +23,13 @@ fieldset {
         background-color: white;
 
         border-radius: 20px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
 
         width: 25rem;
         aspect-ratio: 21/9;
     }
 
-    #btns{
+    #btns {
         display: flex;
         gap: 20px;
     }
@@ -45,7 +44,7 @@ fieldset {
         width: 30rem;
         height: 4rem;
 
-        border: 2px solid #ddd;
+        border: 2px solid var(--light-grey);
         border-radius: 10px;
         transition: border-color 0.1s ease-in-out;
 
@@ -59,12 +58,43 @@ fieldset {
             cursor: pointer;
         }
 
-        &:has(.checkbox:checked) {
+        &:has(.checkbox:checked):not(.wrong-answer):not(.correct-answer):not(.expected-answer) {
             border-color: var(--blue-bell);
+
+            & label {
+                color: var(--blue-bell);
+            }
         }
 
-        &:has(.checkbox:checked) label {
-            color: var(--blue-bell);
+        &.wrong-answer {
+            border-color: var(--error);
+            background-color: rgb(189 47 47 / 0.05);
+
+            & label {
+                color: var(--error);
+            }
+
+            .checkbox:checked{
+                background-color: var(--error);
+                border-color: var(--error);
+            }
+        }
+
+        &.correct-answer, &.expected-answer {
+            border-color: var(--correct);
+
+            & label {
+                color: var(--correct);
+            }
+
+            .checkbox:checked, .checkbox{
+                background-color: var(--correct);
+                border-color: var(--correct);
+            }
+        }
+
+        &.correct-answer{
+            background-color: rgb(0 128 0 / 0.05);
         }
 
         .checkbox {
@@ -108,6 +138,10 @@ fieldset {
 
         &:active {
             background-color: var(--mustard);
+        }
+
+        &:disabled {
+            background-color: var(--light-grey);
         }
     }
 

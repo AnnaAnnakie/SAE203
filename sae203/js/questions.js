@@ -1,4 +1,7 @@
 let currentIndex = 0;
+let nextBtn = document.getElementById("next-btn");
+let prevBtn = document.getElementById("prev-btn");
+let submitBtn = document.getElementById("submit-btn");
 
 function renderQuestion() {
     const question = dataset[currentIndex];
@@ -18,35 +21,59 @@ function renderQuestion() {
         container.appendChild(div);
     });
 
-    document.getElementById('submit-btn').style.display = "block";
+    submitBtn.style.display = "block";
 
 }
 
-document.getElementById('submit-btn').addEventListener('click', () => {
-    const inputs = document.querySelectorAll('input[name="answer"]');
-    let isCorrect = true;
+submitBtn.addEventListener('click', () => {
+    const inputs = document.querySelectorAll("input[name='answer']");
+    let shouldBeChecked = false;
 
     inputs.forEach(input => {
+        let questionBlock = input.closest('.question');
+        let checkbox = questionBlock.querySelector(".checkbox");
+        checkbox.disabled = true;
+
         const wasChecked = input.checked;
-        const shouldBeChecked = input.dataset.correct === "true";
-        if (wasChecked !== shouldBeChecked) isCorrect = false;
+        shouldBeChecked = dataset[currentIndex]['reponses'].find(reponse => reponse.id == input.id)["bonne_reponse"] === 1;
+
+        // Si la réponse est fausse
+        if (wasChecked !== shouldBeChecked && !shouldBeChecked){
+            questionBlock.classList.add("wrong-answer");
+            questionBlock.querySelector("img").src = "assets/cross-mark.svg";
+        }
+        // Si la réponse est bonne
+        else if(wasChecked === shouldBeChecked && shouldBeChecked){
+            questionBlock.classList.add("correct-answer");
+        }
+        // Si c'était la réponse attendue
+        else if(wasChecked !== shouldBeChecked && shouldBeChecked){
+            questionBlock.classList.add("expected-answer");
+        }
     });
 
-    document.getElementById('submit-btn').style.display = "none";
-    document.getElementById("next-btn").hidden = false;
+    submitBtn.style.display = "none";
+    nextBtn.hidden = false;
 });
 
-document.getElementById('next-btn').addEventListener('click', () => {
+nextBtn.addEventListener('click', () => {
     if (currentIndex < dataset.length-1) {
         currentIndex++;
-        document.getElementById("next-btn").hidden = true;
+        nextBtn.hidden = true;
+        prevBtn.disabled = false;
         renderQuestion();
+    }else if (currentIndex === dataset.length - 1){
+        window.location.replace("resultat.php");
     }
 });
 
-document.getElementById('prev-btn').addEventListener('click', () => {
+prevBtn.addEventListener('click', () => {
     if (currentIndex > 0 ) {
         currentIndex--;
+        if (currentIndex === 0){
+            prevBtn.disabled = true;
+        }
+        nextBtn.hidden = true;
         renderQuestion();
     }
 });

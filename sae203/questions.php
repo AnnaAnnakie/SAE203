@@ -47,18 +47,17 @@ if (empty($_GET["quizId"])) {
         <div id="reponses">
         </div>
         <div id="btns">
-            <button id="prev-btn">ANNULER</button>
+            <button id="prev-btn" disabled>RETOUR</button>
             <button id="submit-btn">VALIDER</button>
             <button id="next-btn" hidden>SUIVANTE</button>
         </div>
     </fieldset>
 </main>
 <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/footer.php"; ?>
-</body>
 <script>
     const dataset = <?php echo json_encode($fullQuizData); ?>;
-    console.log(dataset);
 </script>
 <script src="js/questions.js"></script>
+</body>
 <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-js.php"; ?>
 </html>
