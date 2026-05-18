@@ -32,7 +32,10 @@ submitBtn.addEventListener('click', () => {
     inputs.forEach(input => {
         let questionBlock = input.closest('.question');
         let checkbox = questionBlock.querySelector(".checkbox");
+        let label = questionBlock.querySelector('label');
+
         checkbox.disabled = true;
+        label.style.setProperty("cursor", "not-allowed");
 
         const wasChecked = input.checked;
         shouldBeChecked = dataset[currentIndex]['reponses'].find(reponse => reponse.id == input.id)["bonne_reponse"] === 1;
