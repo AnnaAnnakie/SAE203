@@ -195,3 +195,182 @@ fieldset {
         }
     }
 }
+
+/* Boîte du Score Final */
+.result-card {
+    h1 {
+        font-size: 2.25rem;
+        color: var(--space-indigo);
+        margin-bottom: 1.5rem;
+    }
+
+    .score-box {
+        background-color: rgba(255, 159, 28, 0.03);
+        border: 2px dashed var(--amber-glow);
+        border-radius: 16px;
+        padding: 1.5rem;
+        display: inline-block;
+        min-width: 18rem;
+        margin-bottom: 2rem;
+
+        p {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+            color: #4b5563;
+            font-weight: 500;
+        }
+    }
+
+    .big-score {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: var(--orange);
+    }
+}
+
+/* Carte du Classement / Leaderboard */
+.leaderboard-card {
+    h2 {
+        color: var(--space-indigo);
+        margin-bottom: 2rem;
+        font-size: 1.6rem;
+        font-weight: 700;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-top: 0.5rem;
+    }
+
+    th, td {
+        padding: 14px 18px;
+        text-align: left;
+        border-bottom: 1px solid var(--light-grey);
+        font-size: 1.05rem;
+    }
+
+    th {
+        background-color: rgba(64, 159, 221, 0.05); /* Légère teinte de bleu bell */
+        color: var(--space-indigo);
+        font-weight: 700;
+
+        &:first-child {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        &:last-child {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+    }
+
+    td {
+        color: var(--space-indigo);
+        font-weight: 500;
+    }
+    .row-me {
+        background-color: rgba(255, 159, 28, 0.07);
+
+        td {
+            color: var(--orange);
+            font-weight: 700;
+            border-bottom-color: rgba(255, 159, 28, 0.2);
+
+            &:first-child {
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+
+            &:last-child {
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+        }
+    }
+
+    .row-separator {
+        td {
+            text-align: center;
+            color: #9ca3af;
+            padding: 10px;
+            font-weight: 700;
+            border-bottom: none;
+            font-size: 1.2rem;
+        }
+    }
+}
+
+#score-counter {
+    position: fixed;
+    top: 6.5rem;
+    right: 2rem;
+    background-color: var(--white);
+    padding: 10px 24px;
+    border-radius: 50px;
+    border: 2px solid var(--amber-glow);
+    font-weight: 700;
+    color: var(--space-indigo);
+    box-shadow: 0 6px 16px var(--shadow);
+    z-index: 90;
+    font-size: 1rem;
+
+    #current-score {
+        color: var(--orange);
+        font-size: 1.3rem;
+        font-family: "Bricolage Grotesque", sans-serif; /* Harmonisation avec tes titres si existant */
+    }
+}
+
+main.result-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Aligne le contenu vers le haut plutôt qu'au centre absolu */
+    align-items: center;
+    gap: 2.5rem;
+    width: 100%;
+    max-width: 48rem; /* Un poil plus large que ton fieldset pour le confort visuel */
+    margin: 0 auto;
+
+    /* On réutilise les cartes blanches du même style que ton fieldset */
+
+    .result-card, .leaderboard-card {
+        background-color: var(--white);
+        border: 1px solid var(--light-grey);
+        border-radius: 24px;
+        padding: 3rem 2rem;
+        width: 100%;
+        box-shadow: 0 10px 25px var(--shadow);
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .btn-primary {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--blue-bell);
+        color: var(--white);
+        border-radius: 12px;
+        height: 3.5rem;
+        padding: 0 32px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 4px 6px rgba(64, 159, 221, 0.15);
+
+        &:hover {
+            background-color: var(--yale-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px rgba(29, 78, 137, 0.2);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+}
+

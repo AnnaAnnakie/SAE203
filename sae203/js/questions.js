@@ -1,11 +1,14 @@
 let currentIndex = 0;
-let nextBtn = document.getElementById("next-btn");
-let prevBtn = document.getElementById("prev-btn");
-let submitBtn = document.getElementById("submit-btn");
+let totalScore = 0;
+let userSelections = {};
+
+const nextBtn = document.getElementById("next-btn");
+const prevBtn = document.getElementById("prev-btn");
+const submitBtn = document.getElementById("submit-btn");
+const scoreDisplay = document.getElementById("current-score");
 
 function renderQuestion() {
     const question = dataset[currentIndex];
-
     document.getElementById('question-title').textContent = question.intitule;
 
     const container = document.getElementById('reponses');
@@ -14,20 +17,27 @@ function renderQuestion() {
     question.reponses.forEach(reponse => {
         const div = document.createElement('div');
         div.classList.add("question");
+
+        const isChecked = userSelections[question.id] && userSelections[question.id].includes(String(reponse.id));
+
         div.innerHTML = `
-                    <label for="${reponse.id}">${reponse.content}</label>
-                    <input type="checkbox" id="${reponse.id}" name="answer" value="${reponse.id}" class="checkbox" >
-                    <img src="assets/check-mark.svg" alt="check">`;
+            <label for="${reponse.id}">${reponse.content}</label>
+            <input type="checkbox" id="${reponse.id}" name="answer" value="${reponse.id}" class="checkbox" ${isChecked ? 'checked' : ''}>
+            <img src="assets/check-mark.svg" alt="check">`;
         container.appendChild(div);
     });
 
     submitBtn.style.display = "block";
+    nextBtn.hidden = true;
 
+    if (userSelections[question.id] !== undefined) {
+        lockInputsAndShowCorrection();
+    }
 }
 
-submitBtn.addEventListener('click', () => {
+function lockInputsAndShowCorrection() {
     const inputs = document.querySelectorAll("input[name='answer']");
-    let shouldBeChecked = false;
+    const question = dataset[currentIndex];
 
     inputs.forEach(input => {
         let questionBlock = input.closest('.question');
@@ -38,45 +48,84 @@ submitBtn.addEventListener('click', () => {
         label.style.setProperty("cursor", "not-allowed");
 
         const wasChecked = input.checked;
-        shouldBeChecked = dataset[currentIndex]['reponses'].find(reponse => reponse.id == input.id)["bonne_reponse"] === 1;
+        const shouldBeChecked = question.reponses.find(r => r.id == input.id)["bonne_reponse"] === 1;
 
-        // Si la réponse est fausse
-        if (wasChecked !== shouldBeChecked && !shouldBeChecked){
+        if (wasChecked !== shouldBeChecked && !shouldBeChecked) {
             questionBlock.classList.add("wrong-answer");
             questionBlock.querySelector("img").src = "assets/cross-mark.svg";
-        }
-        // Si la réponse est bonne
-        else if(wasChecked === shouldBeChecked && shouldBeChecked){
+        } else if (wasChecked === shouldBeChecked && shouldBeChecked) {
             questionBlock.classList.add("correct-answer");
-        }
-        // Si c'était la réponse attendue
-        else if(wasChecked !== shouldBeChecked && shouldBeChecked){
+        } else if (wasChecked !== shouldBeChecked && shouldBeChecked) {
             questionBlock.classList.add("expected-answer");
         }
     });
 
     submitBtn.style.display = "none";
     nextBtn.hidden = false;
+
+    // Changement de texte dynamique pour le dernier bouton
+    if (currentIndex === dataset.length - 1) {
+        nextBtn.textContent = "VOIR MON RÉSULTAT";
+    } else {
+        nextBtn.textContent = "SUIVANTE";
+    }
+}
+
+submitBtn.addEventListener('click', () => {
+    const inputs = document.querySelectorAll("input[name='answer']");
+    const question = dataset[currentIndex];
+
+    let selectedIds = [];
+    inputs.forEach(input => { if(input.checked) selectedIds.push(input.value); });
+    userSelections[question.id] = selectedIds;
+
+    let questionScore = 0;
+    const bonnesReponses = question.reponses.filter(r => r.bonne_reponse === 1);
+    const totalBonnes = bonnesReponses.length;
+
+    let checkedBonnes = 0;
+    let checkedMauvaises = 0;
+
+    inputs.forEach(input => {
+        const isGood = question.reponses.find(r => r.id == input.id)["bonne_reponse"] === 1;
+        if (input.checked) {
+            if (isGood) checkedBonnes++;
+            else checkedMauvaises++;
+        }
+    });
+
+    if (totalBonnes === 1) {
+        if (checkedBonnes === 1 && checkedMauvaises === 0) {
+            questionScore = 1;
+        }
+    } else if (totalBonnes > 1) {
+        let valeurParReponse = 1 / totalBonnes;
+        questionScore = (checkedBonnes * valeurParReponse) - (checkedMauvaises * valeurParReponse);
+        if (questionScore < 0) questionScore = 0;
+    }
+
+    totalScore += questionScore;
+    scoreDisplay.textContent = totalScore.toFixed(2);
+
+    lockInputsAndShowCorrection();
 });
 
 nextBtn.addEventListener('click', () => {
-    if (currentIndex < dataset.length-1) {
+    if (currentIndex < dataset.length - 1) {
         currentIndex++;
-        nextBtn.hidden = true;
         prevBtn.disabled = false;
         renderQuestion();
-    }else if (currentIndex === dataset.length - 1){
-        window.location.replace("resultat.php");
+    } else if (currentIndex === dataset.length - 1) {
+        // Fin du quiz : Envoi des données en POST sécurisé vers le PHP
+        document.getElementById("user-answers-input").value = JSON.stringify(userSelections);
+        document.getElementById("finish-form").submit();
     }
 });
 
 prevBtn.addEventListener('click', () => {
-    if (currentIndex > 0 ) {
+    if (currentIndex > 0) {
         currentIndex--;
-        if (currentIndex === 0){
-            prevBtn.disabled = true;
-        }
-        nextBtn.hidden = true;
+        if (currentIndex === 0) prevBtn.disabled = true;
         renderQuestion();
     }
 });
