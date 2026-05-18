@@ -36,7 +36,7 @@ if (empty($_GET["quizId"])) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title><?= $quizTitle ?> | Quiz Zest</title>
+    <title><?= $quizTitle ?></title>
     <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-css.php"; ?>
     <link rel="stylesheet" href="css/quiz.css">
 </head>

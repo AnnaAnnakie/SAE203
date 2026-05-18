@@ -95,7 +95,7 @@ foreach ($leaderboard as $index => $row) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Résultats | Quiz Zest</title>
+    <title>Résultats</title>
     <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-css.php"; ?>
     <link rel="stylesheet" href="css/quiz.css">
 </head>

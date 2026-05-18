@@ -15,7 +15,7 @@ $user = getInfoDataBase($query)[0];
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Accueil</title>
+    <title>Profil</title>
     <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-css.php"; ?>
 </head>
 <body>

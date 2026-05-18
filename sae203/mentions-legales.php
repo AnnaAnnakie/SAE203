@@ -8,7 +8,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/php/utils.php";
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Accueil</title>
+    <title>Mentions légales</title>
     <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-css.php"; ?>
 </head>
 <body>

@@ -18,7 +18,7 @@ $questions = getInfoDataBase($query);
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Question</title>
+    <title>Quiz <?= $quizInfos['name'] ?></title>
     <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-css.php"; ?>
 </head>
 <body>
