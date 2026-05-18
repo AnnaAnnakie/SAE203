@@ -2,21 +2,21 @@
 
 :root {
     --space-indigo: #22223B;
-    --orange : #ec7515;
+    --orange: #ec7515;
     --amber-glow: #FF9F1C;
-    --mustard : #fad161;
-    --light-blue : #8cd1ff;
-    --blue-bell : #409fdd;
-    --yale-blue : #124668;
+    --mustard: #fad161;
+    --light-blue: #8cd1ff;
+    --blue-bell: #409fdd;
+    --yale-blue: #124668;
 
-    --black : #111827;
-    --shadow : rgba(0, 0, 0, 0.05);
-    --shadow-hover : rgba(0, 0, 0, 0.1);
+    --black: #111827;
+    --shadow: rgba(0, 0, 0, 0.05);
+    --shadow-hover: rgba(0, 0, 0, 0.1);
     --light-grey: #e5e7eb;
     --bg: #f9fafb;
-    --white : #fff;
-    --error : #bd2f2f;
-    --correct : #008000;
+    --white: #fff;
+    --error: #bd2f2f;
+    --correct: #008000;
 }
 
 * {
@@ -73,6 +73,7 @@ header {
             &:hover {
                 box-shadow: 0 4px 12px var(--shadow-hover);
             }
+
             &:focus {
                 border-color: var(--blue-bell);
                 box-shadow: 0 4px 12px rgba(64, 159, 221, 0.15);
@@ -130,6 +131,7 @@ header {
                     color: var(--white);
                     box-shadow: 0 4px 6px var(--shadow-hover);
                 }
+
                 &:active {
                     background-color: var(--light-blue);
                     border-color: var(--light-blue);
@@ -176,6 +178,66 @@ footer {
     }
 }
 
+.legal-container {
+    display: flex;
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    align-items: flex-start;
+}
+
+.legal-content {
+    flex: 1;
+    background: var(--white);
+    padding: 40px;
+    border-radius: 16px;
+    border: 1px solid var(--light-grey);
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+.legal-section {
+    margin-bottom: 60px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    h1 {
+        font-size: 2.25rem;
+        color: var(--space-indigo);
+        margin-bottom: 24px;
+        border-bottom: 3px solid var(--amber-glow);
+        padding-bottom: 10px;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+        color: var(--yale-blue);
+        margin-top: 28px;
+        margin-bottom: 12px;
+    }
+
+    p, li {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: #4b5563;
+        margin-bottom: 16px;
+    }
+
+    ul {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .lead {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: var(--space-indigo);
+    }
+
+}
+
 @media (max-width: 768px) {
     header {
         padding: 0 1rem 12px 1rem;
@@ -194,5 +256,14 @@ footer {
         flex-direction: column;
         gap: 16px;
         text-align: center;
+    }
+
+    .legal-container {
+        flex-direction: column;
+        padding: 20px 12px;
+    }
+
+    .legal-content {
+        padding: 24px;
     }
 }
