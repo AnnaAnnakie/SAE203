@@ -1,3 +1,4 @@
+// Fonction pour vérifier le contenu des champs dans le formulaire de connexion et possibilité de voir son mdp (donc pas de ****)
 document.addEventListener("DOMContentLoaded", () => {
     const togglers = document.querySelectorAll(".toggle-password");
 
@@ -24,7 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (signUpForm) {
         signUpForm.addEventListener("submit", function(event) {
             const usernameInput = document.getElementById("newUsername");
-            const emailInput = document.getElementById("email");
             const passwordInput = document.getElementById("password");
 
             const oldAlert = signUpForm.querySelector(".js-error-alert");
@@ -46,12 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (errorMessage !== "") {
                 event.preventDefault();
 
-                // Création d'un paragraphe d'erreur identique à tes styles PHP
                 const errorParagraph = document.createElement("p");
                 errorParagraph.className = "error js-error-alert";
                 errorParagraph.textContent = errorMessage;
 
-                // Insertion de l'erreur juste avant le bouton de soumission
                 const submitBtn = signUpForm.querySelector("button[type='submit']");
                 signUpForm.insertBefore(errorParagraph, submitBtn);
             }
