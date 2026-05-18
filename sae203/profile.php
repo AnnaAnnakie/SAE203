@@ -132,7 +132,7 @@ $user = getInfoDataBase($query)[0];
                 <a href="logout.php" class="btn btn-logout">Se déconnecter</a>
 
                 <?php if ($user['admin']): ?>
-                    <a href="admin/reset.php" class="btn btn-reset">RESET SYSTEM</a>
+                    <a href="reset.php" class="btn btn-reset">RESET SYSTEM</a>
                 <?php else: ?>
                     <form method="post" id="deleteAccountForm">
                         <button type="submit" name="action_delete_account" class="btn btn-danger-link">Supprimer mon
