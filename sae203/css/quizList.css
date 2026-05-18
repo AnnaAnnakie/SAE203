@@ -1,0 +1,203 @@
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 5%;
+}
+
+.catalog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--light-grey);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.catalog-header h1 {
+    color: var(--space-indigo);
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin: 0 0 5px 0;
+}
+
+.catalog-header .subtitle {
+    color: var(--black);
+    opacity: 0.6;
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.btn-create {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--space-indigo);
+    color: var(--white);
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px -1px var(--shadow);
+}
+
+.btn-create:hover {
+    background-color: var(--yale-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px var(--shadow-hover);
+}
+
+#container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 10px 0;
+}
+
+.quiz-card {
+    background-color: var(--white);
+    border: 1px solid var(--light-grey);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+    position: relative;
+    box-shadow: 0 4px 6px -1px var(--shadow);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.quiz-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--orange), var(--amber-glow));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.quiz-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--blue-bell);
+    box-shadow: 0 20px 25px -5px var(--shadow-hover);
+}
+
+.quiz-card:hover::before {
+    opacity: 1;
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.quiz-badge {
+    background-color: rgba(140, 209, 255, 0.2); /* Ton light blue transparent */
+    color: var(--yale-blue);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.5px;
+}
+
+.edit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg);
+    padding: 6px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.edit-btn:hover {
+    background-color: var(--mustard);
+    transform: scale(1.1);
+}
+
+.quiz-card h3 {
+    color: var(--space-indigo);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+.card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--bg);
+    padding-top: 15px;
+    gap: 10px;
+}
+
+.quiz-card .author {
+    font-size: 0.85rem;
+    color: var(--black);
+    opacity: 0.6;
+    margin: 0;
+}
+
+.quiz-card .author span {
+    font-weight: 600;
+    color: var(--space-indigo);
+    opacity: 1;
+}
+
+.btn-discover {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--orange);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: color 0.2s ease, gap 0.2s ease;
+}
+
+.btn-discover svg {
+    transition: transform 0.2s ease;
+}
+
+.quiz-card:hover .btn-discover {
+    color: var(--amber-glow);
+}
+
+.quiz-card:hover .btn-discover svg {
+    transform: translateX(4px);
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    background-color: var(--bg);
+    border: 2px dashed var(--light-grey);
+    border-radius: 12px;
+    color: var(--black);
+    opacity: 0.6;
+}
+
+@media (max-width: 600px) {
+    .catalog-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .btn-create {
+        width: 100%;
+        justify-content: center;
+    }
+}
