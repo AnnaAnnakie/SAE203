@@ -14,7 +14,7 @@ if (empty($_GET["quizId"])) {
     $quizId = $_GET['quizId'];
 
     $quizInfo = getInfoDataBase("SELECT name FROM sae203_quiz WHERE id = $quizId");
-    $quizTitle = !empty($quizInfo) ? $quizInfo[0]['titre'] : "Quiz";
+    $quizTitle = !empty($quizInfo) ? $quizInfo[0]['name'] : "Quiz";
 
     $questionsTab = getInfoDataBase("SELECT * FROM sae203_question WHERE quiz = $quizId");
     $fullQuizData = [];
