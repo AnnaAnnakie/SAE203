@@ -24,36 +24,90 @@ function getInfoDataBase($query)
     return $rows;
 }
 
-function saveQuiz($quizName, $creatorId, $questionsData): string
+function saveOrUpdateQuiz($quizId, $quizName, $creatorId, $questionsData): string
 {
     $db = getPDOConnection();
 
     try {
         // Préparation temporaire de l'envoie d'infos à la BD
         $db->beginTransaction();
+        if ($quizId) {
+            $quiz = $db->prepare("UPDATE sae203_quiz SET name = ? WHERE id = ?");
+            $quiz->execute([$quizName, $quizId]);
+        } else {
+            // Préparation du quiz
+            $quiz = $db->prepare("INSERT INTO sae203_quiz (name, creator) VALUES (?, ?)");
+            // On "rempli" les ?
+            $quiz->execute([$quizName, $creatorId]);
+            // Récupération de l'id pour l'ajouter plus tard en clef étrangère
+            $quizId = $db->lastInsertId();
+        }
 
-        // Préparation du quiz
-        $quiz = $db->prepare("INSERT INTO sae203_quiz (name, creator) VALUES (?, ?)");
-        // On "rempli" les ?
-        $quiz->execute([$quizName, $creatorId]);
-        // Récupération de l'id pour l'ajouter plus tard en clef étrangère
-        $quizId = $db->lastInsertId();
-        $question = $db->prepare("INSERT INTO sae203_question (quiz, question) VALUES (?, ?)");
-        $reponse = $db->prepare("INSERT INTO sae203_reponse (question, content, bonne_reponse) VALUES (?, ?, ?)");
+        // Listes pour traquer ce qu'on garde pour de supprimer le reste
+        $keptQuestionIds = [];
+        $keptAnswerIds = [];
 
-        foreach ($questionsData as $q) {
-            $questionText = $q['text'];
+        foreach ($questionsData as $question) {
+            $questionId = isset($question['id']) ? (int)$question['id'] : null;
+            $questionText = $question['text'];
 
-            $question->execute([$quizId, $questionText]);
-            $questionId = $db->lastInsertId();
+            if ($questionId) {
+                // La question existe
+                $questionQuery = $db->prepare("UPDATE sae203_question SET question = ? WHERE id = ? AND quiz = ?");
+                $questionQuery->execute([$questionText, $questionId, $quizId]);
+                $keptQuestionIds[] = $questionId;
+            } else {
+                // Nouvelle question
+                $questionQuery = $db->prepare("INSERT INTO sae203_question (quiz, question) VALUES (?, ?)");
+                $questionQuery->execute([$quizId, $questionText]);
+                $questionId = $db->lastInsertId();
+                $keptQuestionIds[] = $questionId;
+            }
 
-            if (isset($q['answers']) && is_array($q['answers'])) {
-                foreach ($q['answers'] as $a) {
-                    $answerContent = $a['text'];
-                    $isCorrect = isset($a['correct']) ? 1 : 0;
+            if (isset($question['answers']) && is_array($question['answers'])) {
+                foreach ($question['answers'] as $reponse) {
+                    $reponseId = isset($reponse['id']) ? (int)$reponse['id'] : null;
+                    $reponseText = $reponse['text'];
+                    $isCorrect = isset($reponse['correct']) ? 1 : 0;
 
-                    $reponse->execute([$questionId, $answerContent, $isCorrect]);
+                    // La réponse existe
+                    if ($reponseId) {
+                        $reponseQuery = $db->prepare("UPDATE sae203_reponse SET content = ?, bonne_reponse = ? WHERE id = ? AND question = ?");
+                        $reponseQuery->execute([$reponseText, $isCorrect, $reponseId, $questionId]);
+                        $keptAnswerIds[] = $reponseId;
+                    } else {
+                        // Nouvelle réponse
+                        $reponseQuery = $db->prepare("INSERT INTO sae203_reponse (question, content, bonne_reponse) VALUES (?, ?, ?)");
+                        $reponseQuery->execute([$questionId, $reponseText, $isCorrect]);
+                        $keptAnswerIds[] = $db->lastInsertId();
+                    }
                 }
+            }
+        }
+
+        if ($quizId) {
+            // Supprimer les réponses qui ne sont plus dans le formulaire
+            if (!empty($keptAnswerIds)) {
+                /*
+                On a besoin d'un nombre variable de ? pour preparer la query
+                On crée une liste de longeur $keptAnswerIds avec que des ? et on en fait un string séparé par des virgules
+                */
+                $inReponseClause = implode(',', array_fill(0, sizeof($keptAnswerIds), '?'));
+                $deleteReponseQuery = $db->prepare("DELETE FROM sae203_reponse WHERE question IN (SELECT id FROM sae203_question WHERE quiz = ?) AND id NOT IN ($inReponseClause)");
+                $deleteReponseQuery->execute(array_merge([$quizId], $keptAnswerIds));
+            } else {
+                $deleteReponseQuery = $db->prepare("DELETE FROM sae203_reponse WHERE question IN (SELECT id FROM sae203_question WHERE quiz = ?)");
+                $deleteReponseQuery->execute([$quizId]);
+            }
+
+            // Supprimer les questions qui ne sont plus dans le formulaire
+            if (!empty($keptQuestionIds)) {
+                $inQuestionClause = implode(',', array_fill(0, sizeof($keptQuestionIds), '?'));
+                $deleteQuestionQuery = $db->prepare("DELETE FROM sae203_question WHERE quiz = ? AND id NOT IN ($inQuestionClause)");
+                $deleteQuestionQuery->execute(array_merge([$quizId], $keptQuestionIds));
+            } else {
+                $deleteQuestionQuery = $db->prepare("DELETE FROM sae203_question WHERE quiz = ?");
+                $deleteQuestionQuery->execute([$quizId]);
             }
         }
 
@@ -61,9 +115,10 @@ function saveQuiz($quizName, $creatorId, $questionsData): string
         $db->commit();
         return "OK";
 
-    } catch (PDOException $e) {
+
+    } catch (PDOException $event) {
         // On annule tout !
         $db->rollBack();
-        return "Erreur : " . $e->getMessage();
+        return "Erreur : " . $event->getMessage();
     }
 }

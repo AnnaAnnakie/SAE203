@@ -34,7 +34,6 @@ addQuestionBtn.addEventListener('click', () => {
             <button type="button" class="add-answer-btn">+ Ajouter une réponse</button>
         </div>
     `;
-
     container.appendChild(newQuestion);
 });
 
@@ -63,7 +62,6 @@ container.addEventListener('click', (event) => {
 
     // Pour supprimer une réponse
     if (event.target.classList.contains('delete-answer-btn')) {
-        const questionCard = event.target.closest('.question-card');
         event.target.closest('.answer-item').remove();
         updateFormIndexes();
     }
@@ -90,12 +88,20 @@ function updateFormIndexes() {
         // Update input principal question
         card.querySelector('.question-input').name = `questions[${newQNum}][text]`;
 
+        // Si l'input ID caché de la question existe, on met à jour son name
+        const qIdInput = card.querySelector('input[type="hidden"][name^="questions"][name$="[id]"]');
+        if (qIdInput) qIdInput.name = `questions[${newQNum}][id]`;
+
         // Update toutes les réponses de cette question
         const answerItems = card.querySelectorAll('.answer-item');
         answerItems.forEach((answer, aIndex) => {
             const newANum = aIndex + 1;
             answer.querySelector('input[type="text"]').name = `questions[${newQNum}][answers][${newANum}][text]`;
             answer.querySelector('input[type="checkbox"]').name = `questions[${newQNum}][answers][${newANum}][correct]`;
+
+            // Si l'input ID de la réponse existe, on gère son name aussi
+            const aIdInput = answer.querySelector('input[type="hidden"]');
+            if (aIdInput) aIdInput.name = `questions[${newQNum}][answers][${newANum}][id]`;
         });
     });
 }
