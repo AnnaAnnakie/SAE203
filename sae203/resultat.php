@@ -59,11 +59,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['user_answers'])) {
 
     $finalScore = round($finalScore, 2);
 
-    $query = "INSERT INTO sae203_resultat (user, quiz, score) VALUES ($userId, $quizId, $finalScore)";
+    $query = "
+        INSERT INTO sae203_resultat (user, quiz, score) 
+        VALUES ($userId, $quizId, $finalScore)
+        ON DUPLICATE KEY UPDATE score = GREATEST(score, VALUES(score))
+    ";
     getInfoDataBase($query);
 
 } else {
-    $lastRes = getInfoDataBase("SELECT score FROM sae203_resultat WHERE user = $userId AND quiz = $quizId ORDER BY id DESC LIMIT 1");
+    $lastRes = getInfoDataBase("
+        SELECT score 
+        FROM sae203_resultat 
+        WHERE user = $userId AND quiz = $quizId 
+        ORDER BY id DESC 
+        LIMIT 1
+    ");
     $finalScore = !empty($lastRes) ? $lastRes[0]['score'] : 0;
 }
 
