@@ -40,12 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
         $connectInfo = createUser($email, $username, $password);
 
+        $query = "SELECT id FROM sae203_user WHERE username = '$username'";
+        $userId = getInfoDataBase($query)[0]['id'];
+
         if ($connectInfo == "OK") {
             session_regenerate_id(true);
 
             $_SESSION['user'] = [
                     'id' => 1,
-                    'username' => $username
+                    'username' => $username,
+                    'user_id' => $userId
             ];
 
             header('Location: index.php');
@@ -56,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' ) {
     }
 
 }
-
+// TODO : EMPECHER SI LE CHAMP EST PAS BON (contient des ')
 ?>
 <!DOCTYPE html>
 <html>
@@ -76,7 +80,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' ) {
                     <label for="userID">Nom d'utilisateur / Email</label>
                     <input type="text" name="userID" id="userID" required>
                     <label for="passwordLogin">Mot de passe</label>
-                    <input type="password" name="passwordLogin"  id="passwordLogin" required>
+                    <div class="password-container">
+                        <input type="password" name="passwordLogin" id="passwordLogin" required>
+                        <div class="toggle-password">
+                            <!-- Ton SVG Oeil Ouvert (Visible par défaut) -->
+                            <svg class="icon-eye-open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <!-- Ton SVG Oeil Fermé/Barré (Caché par défaut) -->
+                            <svg class="icon-eye-close hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                                <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                                <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                                <line x1="2" y1="2" x2="22" y2="22"/>
+                            </svg>
+                        </div>
+                    </div>
 
                     <?php if ($errorMessageLogin): ?>
                         <p class="error"><?= $errorMessageLogin ?></p>
@@ -91,8 +111,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' ) {
                     <input type="email" name="email" id="email">
                     <label for="newUsername">Nom d'utilisateur</label>
                     <input type="text" name="newUsername" id="newUsername" required>
-                    <label for="password">Mot de passe</label>
-                    <input type="password" name="password" id="password" required>
+                    <label for="passwordLogin">Mot de passe</label>
+                    <div class="password-container">
+                        <input type="password" name="passwordLogin" id="passwordLogin" required>
+                        <div class="toggle-password">
+                            <!-- Ton SVG Oeil Ouvert (Visible par défaut) -->
+                            <svg class="icon-eye-open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <!-- Ton SVG Oeil Fermé/Barré (Caché par défaut) -->
+                            <svg class="icon-eye-close hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                                <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                                <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                                <line x1="2" y1="2" x2="22" y2="22"/>
+                            </svg>
+                        </div>
+                    </div>
 
                     <?php if ($errorMessageSignup): ?>
                         <p class="error"><?= $errorMessageSignup ?></p>
