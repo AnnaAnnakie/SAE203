@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Molle:ital@1&display=swap');
 
-:root{
+:root {
     --space-indigo: #22223B;
     --orange : #ec7515;
     --amber-glow: #FF9F1C;
@@ -9,123 +9,190 @@
     --blue-bell : #409fdd;
     --yale-blue : #124668;
 
-    --black : #000;
-    --shadow : rgba(0 0 0 / .05);
-    --light-grey: #ddd;
+    --black : #111827;
+    --shadow : rgba(0, 0, 0, 0.05);
+    --shadow-hover : rgba(0, 0, 0, 0.1);
+    --light-grey: #e5e7eb;
     --bg: #f9fafb;
     --white : #fff;
     --error : #bd2f2f;
     --correct : #008000;
 }
 
-*{
+* {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
     font-family: "Bricolage Grotesque", sans-serif;
-    a{
+
+    a {
         text-decoration: none;
+        color: inherit;
     }
 }
 
-body{
+body {
     background-color: var(--bg);
-}
-
-main{
-    min-height: calc(100vh - 4rem - 2rem - 4rem);
-}
-
-header{
+    color: var(--black);
     display: flex;
-    padding: 1rem 3rem;
-    justify-content: space-between;
-    background-color: white;
-    align-items: center;
-    border-bottom: 1px solid var(--shadow);
-    box-shadow:  0 1px 2px 0 var(--shadow);
+    flex-direction: column;
+    min-height: 100vh;
+}
 
-    #search-bar{
+header {
+    display: flex;
+    padding: 0 3rem;
+    height: 5rem;
+    justify-content: space-between;
+    background-color: var(--white);
+    align-items: center;
+    border-bottom: 1px solid var(--light-grey);
+    box-shadow: 0 1px 3px var(--shadow);
+    top: 0;
+
+    #search-bar {
         display: flex;
         align-items: center;
         position: relative;
-        margin: 0 50px ;
+        margin: 0 24px;
         border-radius: 2rem;
-        height: 4rem;
-        width: 40vw;
-        input{
-            font-size: 1.1em;
-            padding: 0 20px;
+        height: 3rem;
+        width: 100%;
+        max-width: 500px;
+
+        input {
+            font-size: 1rem;
+            padding: 0 45px 0 20px;
             border: solid 2px var(--amber-glow);
             border-radius: 2rem;
-            height: 4rem;
-            width: 40vw;
-            transition: border-color ease-in-out 0.2s, box-shadow ease-in-out 0.2s;
+            height: 100%;
+            width: 100%;
+            transition: all 0.2s ease-in-out;
             outline: none;
-            &:hover{
-                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+            &:hover {
+                box-shadow: 0 4px 12px var(--shadow-hover);
             }
-            &:focus-visible, &:focus{
+            &:focus {
                 border-color: var(--blue-bell);
-                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                box-shadow: 0 4px 12px rgba(64, 159, 221, 0.15);
             }
         }
-        button{
+
+        button {
             display: flex;
             justify-content: center;
             align-items: center;
             position: absolute;
             background-color: transparent;
             border: none;
-            right: 0;
-            height: 4rem;
+            right: 5px;
+            height: calc(100% - 10px);
             aspect-ratio: 1/1;
-            svg{
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.2s;
+
+            &:hover {
+                background-color: var(--bg);
+            }
+
+            svg {
                 fill: var(--amber-glow);
-                width: 40%;
-                height: 40%;
+                width: 45%;
+                height: 45%;
+                transition: fill 0.2s;
             }
         }
-
     }
-
 
     #connexion, #connected {
         display: flex;
         gap: 20px;
         align-items: center;
+
         a {
             align-items: center;
             border-radius: 1.5rem;
             display: flex;
-            font-size: 1.2em;
-            height: 3rem;
+            font-size: 1rem;
+            font-weight: 600;
+            height: 2.5rem;
             padding: 0 20px;
-            transition: color ease-in-out 0.2s, background-color ease-in-out 0.2s, border-color ease-in-out 0.2s;
+            transition: all 0.2s ease-in-out;
 
             &#log-in, &#logged {
                 color: var(--blue-bell);
-                border: 1px solid var(--blue-bell);
+                border: 2px solid var(--blue-bell);
 
                 &:hover {
                     background: var(--blue-bell);
-                    color: white;
-                    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+                    color: var(--white);
+                    box-shadow: 0 4px 6px var(--shadow-hover);
                 }
-                &:active{
+                &:active {
                     background-color: var(--light-blue);
-                    border: 1px solid var(--light-blue);
+                    border-color: var(--light-blue);
                 }
             }
         }
     }
-
-
 }
 
-footer{
-    background-color: var(--blue-bell);
-    height: 4rem;
-    a{
-        color: white;
+footer {
+    background-color: var(--space-indigo);
+    color: var(--white);
+    padding: 24px 0;
+    margin-top: auto;
+    border-top: 4px solid var(--orange);
+
+    .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.95rem;
+    }
+
+    .footer-links {
+        display: flex;
+        gap: 24px;
+
+        a {
+            color: var(--light-grey);
+            transition: color 0.2s;
+
+            &:hover {
+                color: var(--amber-glow);
+            }
+        }
+    }
+
+    .footer-credit {
+        font-family: "Molle", italic, sans-serif;
+        color: var(--mustard);
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 0 1rem 12px 1rem;
+        flex-direction: column;
+        height: auto;
+        gap: 12px;
+
+        #search-bar {
+            margin: 0;
+            max-width: 100%;
+            order: 3;
+        }
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
     }
 }

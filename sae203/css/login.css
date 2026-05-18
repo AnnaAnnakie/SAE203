@@ -1,10 +1,90 @@
-#forms{
-    display: flex;
-    justify-content: center;
+main {
+    max-width: 1000px;
     width: 100%;
+    margin: 40px auto;
+    padding: 0 20px;
+}
 
-    form{
-        display: flex;
-        flex-direction: column;
+h1 {
+    text-align: center;
+    font-size: 2.25rem;
+    color: var(--amber-glow);
+    margin-bottom: 40px;
+}
+
+#forms {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 40px;
+    background: white;
+    border: 1px solid var(--light-grey);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: var(--yale-blue);
+        font-size: 0.95rem;
     }
+
+    input {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 1rem;
+        border: 1px solid var(--light-grey);
+        border-radius: 6px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+        &:focus {
+            outline: none;
+            border-color: var(--blue-bell);
+            box-shadow: 0 0 0 3px var(--shadow);
+        }
+    }
+
+    button[type="submit"] {
+        background: var(--amber-glow);
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        margin-top: auto;
+        transition: background-color 0.2s ease;
+        &:hover {
+            background: var(--orange);
+        }
+        &:active{
+            background: var(--mustard);
+        }
+    }
+}
+
+.error {
+    background-color: var(--light-grey);
+    color: var(--error);
+    border: 1px solid var(--light-grey);
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+hr {
+    border: none;
+    border-left: 1px solid var(--light-grey);
+    margin: 0;
 }
