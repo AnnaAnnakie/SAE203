@@ -21,11 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
         if ($connectInfo == "OK") {
 
+            $query = "SELECT id FROM sae203_user WHERE username = '$username'";
+            $userId = getInfoDataBase($query)[0]['id'];
             session_regenerate_id(true);
 
             $_SESSION['user'] = [
                     'id' => 1,
-                    'username' => $username
+                    'username' => $username,
+                    'user_id' => $userId
             ];
 
             header('Location: catalogue.php');

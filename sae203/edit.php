@@ -45,7 +45,7 @@ if ($id) {
     if (!empty($quiz)) {
         $quizName = $quiz[0]['name'];
         // On vérifie si l'utilisateur en session est le créateur
-        $isCreator = ($quiz[0]['creator'] == $_SESSION['user']['id']);
+        $isCreator = ($quiz[0]['creator'] == $_SESSION['user']['user_id']);
 
         $query = "SELECT * FROM sae203_question WHERE quiz = $id ";
         $questions = getInfoDataBase($query);

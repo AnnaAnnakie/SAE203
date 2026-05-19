@@ -98,7 +98,7 @@ foreach ($leaderboard as $index => $row) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Résultats</title>
     <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-css.php"; ?>
-    <link rel="stylesheet" href="css/quiz.css">
+    <link rel="stylesheet" href="css/questions.css">
 </head>
 <body>
 <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/header.php"; ?>
