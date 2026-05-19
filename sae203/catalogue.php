@@ -11,6 +11,8 @@ $query = "SELECT q.*, u.username AS creator_name
           FROM sae203_quiz q 
           JOIN sae203_user u ON q.creator = u.id";
 $result = getInfoDataBase($query);
+
+$current_username = $_SESSION['user']['username'];
 ?>
 
 <!DOCTYPE html>
@@ -41,6 +43,25 @@ $result = getInfoDataBase($query);
         </a>
     </div>
 
+    <div class="filter-bar">
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Rechercher un quiz...">
+        </div>
+        <div class="filter-actions">
+            <select id="sort-select">
+                <option value="default">Trier par...</option>
+                <option value="alpha-asc">Nom (A-Z)</option>
+                <option value="alpha-desc">Nom (Z-A)</option>
+                <option value="author-asc">Auteur (A-Z)</option>
+            </select>
+
+            <label class="checkbox-filter">
+                <input type="checkbox" id="mine-checkbox">
+                Mes quiz uniquement
+            </label>
+        </div>
+    </div>
+
     <div id="container">
         <?php
         if (empty($result)): ?>
@@ -49,9 +70,13 @@ $result = getInfoDataBase($query);
             </div>
         <?php else:
             foreach ($result as $quiz) {
-                $isCreator = ($quiz['creator_name'] === $_SESSION['user']['username']);
+                $isCreator = ($quiz['creator_name'] === $current_username);
                 ?>
-                <div class="quiz-card">
+                <div class="quiz-card"
+                     data-name="<?= htmlspecialchars(strtolower($quiz['name'])) ?>"
+                     data-author="<?= htmlspecialchars(strtolower($quiz['creator_name'])) ?>"
+                     data-mine="<?= $isCreator ? 'true' : 'false' ?>">
+
                     <div class="card-top">
                         <span class="quiz-badge">Quiz</span>
                         <?php if ($isCreator): ?>
@@ -61,15 +86,16 @@ $result = getInfoDataBase($query);
                         <?php endif; ?>
                     </div>
 
-                    <h3><?= $quiz["name"] ?></h3>
+                    <h3><?= htmlspecialchars($quiz["name"]) ?></h3>
 
                     <div class="card-bottom">
-                        <p class="author">Par <span><?= $quiz['creator_name'] ?></span></p>
+                        <p class="author">Par <span><?= htmlspecialchars($quiz['creator_name']) ?></span></p>
                         <a href="/sae203/quiz.php?quizId=<?= $quiz['id'] ?>" class="btn-discover">
                             Découvrir
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                                  fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                  stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
@@ -80,10 +106,14 @@ $result = getInfoDataBase($query);
             }
         endif;
         ?>
+        <div id="no-match-state" class="empty-state" style="display: none;">
+            <p>Aucun quiz ne correspond à vos critères de recherche.</p>
+        </div>
     </div>
 </main>
 
 <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/footer.php"; ?>
+<script src="js/catalogue.js"></script>
 </body>
 <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-js.php"; ?>
 </html>
