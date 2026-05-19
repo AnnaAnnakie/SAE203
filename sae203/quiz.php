@@ -2,11 +2,6 @@
 session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/php/utils.php";
 
-if (!isset($_SESSION['user'])) {
-    header("Location: /sae203/login.php");
-    exit;
-}
-
 $quiz = isset($_GET['quizId']) ? (int)$_GET['quizId'] : 0;
 $userId = (int)$_SESSION['user']['id'];
 

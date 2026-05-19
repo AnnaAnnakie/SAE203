@@ -2,17 +2,15 @@
 session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/php/utils.php";
 
-if (!isset($_SESSION['user'])) {
-    header("Location: /sae203/login.php");
-    exit;
-}
-
 $query = "SELECT q.*, u.username AS creator_name 
           FROM sae203_quiz q 
           JOIN sae203_user u ON q.creator = u.id";
 $result = getInfoDataBase($query);
 
-$current_username = $_SESSION['user']['username'];
+
+if ($_SESSION['user']) {
+    $current_username = $_SESSION['user']['username'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -33,6 +31,7 @@ $current_username = $_SESSION['user']['username'];
             <h1>Explorez les Quizs</h1>
             <p class="subtitle">Prêt à tester vos connaissances et marquer le meilleur score ?</p>
         </div>
+        <?php if (isset($_SESSION['user'])) { ?>
         <a href="edit.php" class="btn-create">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -41,6 +40,7 @@ $current_username = $_SESSION['user']['username'];
             </svg>
             Créer un quiz
         </a>
+        <?php }?>
     </div>
 
     <div class="filter-bar">
@@ -55,10 +55,15 @@ $current_username = $_SESSION['user']['username'];
                 <option value="author-asc">Auteur (A-Z)</option>
             </select>
 
+            <?php if (isset($current_username)) {
+                echo <<< EOD
             <label class="checkbox-filter">
                 <input type="checkbox" id="mine-checkbox">
                 Mes quiz uniquement
             </label>
+            EOD;
+            }
+            ?>
         </div>
     </div>
 

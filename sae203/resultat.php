@@ -2,13 +2,10 @@
 session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/php/utils.php";
 
-if(!isset($_SESSION['user'])){
-    header("Location: /sae203/login.php");
-    exit;
-}
+// 1. Récupération des infos de session si elles existent
+$userId = $_SESSION['user']['user_id'] ?? null;
+$userUsername = $_SESSION['user']['username'] ?? "Invité";
 
-$userId = $_SESSION['user']['user_id'] ?? 1;
-$userUsername = $_SESSION['user']['username'] ?? "Moi";
 $quizId = $_GET['quizId'] ?? null;
 
 if (!$quizId) {
@@ -18,9 +15,9 @@ if (!$quizId) {
 
 $finalScore = 0;
 
+// 2. LE CALCUL DU SCORE (Exécuté pour TOUT LE MONDE si le formulaire est soumis)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['user_answers'])) {
     $userAnswers = json_decode($_POST['user_answers'], true);
-
     $questionsTab = getInfoDataBase("SELECT * FROM sae203_question WHERE quiz = $quizId");
 
     foreach ($questionsTab as $question) {
@@ -59,34 +56,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['user_answers'])) {
 
     $finalScore = round($finalScore, 2);
 
-    $query = "
-        INSERT INTO sae203_resultat (user, quiz, score) 
-        VALUES ($userId, $quizId, $finalScore)
-        ON DUPLICATE KEY UPDATE score = GREATEST(score, VALUES(score))
-    ";
-    getInfoDataBase($query);
-
+    // 3. SAUVEGARDE EN BDD (Uniquement si l'utilisateur est connecté)
+    if ($userId) {
+        $query = "
+            INSERT INTO sae203_resultat (user, quiz, score) 
+            VALUES ($userId, $quizId, $finalScore)
+            ON DUPLICATE KEY UPDATE score = GREATEST(score, VALUES(score))
+        ";
+        getInfoDataBase($query);
+    }
 } else {
-    $lastRes = getInfoDataBase("
-        SELECT score 
-        FROM sae203_resultat 
-        WHERE user = $userId AND quiz = $quizId 
-        ORDER BY id DESC 
-        LIMIT 1
-    ");
-    $finalScore = !empty($lastRes) ? $lastRes[0]['score'] : 0;
+    // Si pas de POST (rechargement de page), on essaie de récupérer le dernier score en BDD pour le connecté
+    if ($userId) {
+        $lastRes = getInfoDataBase("
+            SELECT score 
+            FROM sae203_resultat 
+            WHERE user = $userId AND quiz = $quizId 
+            ORDER BY id DESC 
+            LIMIT 1
+        ");
+        $finalScore = !empty($lastRes) ? $lastRes[0]['score'] : 0;
+    }
 }
 
-$query = "SELECT r.user, MAX(r.score) as max_score, u.username FROM sae203_resultat r JOIN sae203_user u ON r.user = u.id WHERE r.quiz = $quizId GROUP BY r.user ORDER BY max_score DESC";
-$leaderboard = getInfoDataBase($query);
+// 4. RÉCUPÉRATION DU LEADERBOARD (Pour l'affichage global, mais le traitement du rang reste pour le connecté)
+$leaderboard = getInfoDataBase("
+    SELECT r.user, MAX(r.score) as max_score, u.username 
+    FROM sae203_resultat r 
+    JOIN sae203_user u ON r.user = u.id 
+    WHERE r.quiz = $quizId 
+    GROUP BY r.user 
+    ORDER BY max_score DESC
+");
 
 $top10 = array_slice($leaderboard, 0, 10);
 
 $userRank = 0;
-foreach ($leaderboard as $index => $row) {
-    if ($row['user'] == $userId) {
-        $userRank = $index + 1;
-        break;
+if ($userId) {
+    foreach ($leaderboard as $index => $row) {
+        if ($row['user'] == $userId) {
+            $userRank = $index + 1;
+            break;
+        }
     }
 }
 ?>
@@ -111,8 +122,15 @@ foreach ($leaderboard as $index => $row) {
             <div class="big-score"><?= number_format($finalScore, 2) ?> pts</div>
         </div>
 
+        <?php if (!$userId): ?>
+            <div class="guest-notice">
+                💡 <strong>Mode invité :</strong> Votre score n'est pas enregistré. <a href="login.php">Connectez-vous</a>
+                pour rejoindre le classement !
+            </div>
+        <?php endif; ?>
+
         <div class="actions">
-            <a href="index.php" class="btn-primary">Retour à l'accueil</a>
+            <a href="catalogue.php" class="btn-primary">Retour à la liste des quiz</a>
         </div>
     </div>
 
@@ -131,22 +149,24 @@ foreach ($leaderboard as $index => $row) {
             $userInTop10 = false;
             foreach ($top10 as $index => $row):
                 $currentRank = $index + 1;
-                $isMe = ($row['user'] == $userId);
+                $isMe = ($userId && $row['user'] == $userId);
                 if ($isMe) $userInTop10 = true;
                 ?>
                 <tr class="<?= $isMe ? 'row-me' : '' ?>">
                     <td><strong>#<?= $currentRank ?></strong></td>
-                    <td><?= $row['username'] ?> <?= $isMe ? ' (Moi)' : '' ?></td>
+                    <td><?= htmlspecialchars($row['username']) ?> <?= $isMe ? ' (Moi)' : '' ?></td>
                     <td><?= number_format($row['max_score'], 2) ?> pts</td>
                 </tr>
             <?php endforeach; ?>
 
-            <?php if (!$userInTop10 && $userRank > 10): ?>
-                <tr class="row-separator"><td colspan="3">...</td></tr>
+            <?php if ($userId && !$userInTop10 && $userRank > 10): ?>
+                <tr class="row-separator">
+                    <td colspan="3">...</td>
+                </tr>
                 <tr class="row-me">
                     <td><strong>#<?= $userRank ?></strong></td>
-                    <td><?= $userUsername ?> (Moi)</td>
-                    <td><?= $finalScore, 2 ?> pts</td>
+                    <td><?= htmlspecialchars($userUsername) ?> (Moi)</td>
+                    <td><?= number_format($finalScore, 2) ?> pts</td>
                 </tr>
             <?php endif; ?>
             </tbody>
