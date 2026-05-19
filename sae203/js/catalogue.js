@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("search-input");
     const sortSelect = document.getElementById("sort-select");
-    const mineCheckbox = document.getElementById("mine-checkbox");
+    const mineCheckbox = document.getElementById("mine-checkbox"); // Vaut null si déconnecté
     const container = document.getElementById("container");
     const noMatchState = document.getElementById("no-match-state");
 
@@ -9,7 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function filterQuizs() {
         const searchValue = searchInput.value.toLowerCase().trim();
-        const showOnlyMine = mineCheckbox.checked;
+
+        const showOnlyMine = mineCheckbox ? mineCheckbox.checked : false;
         let visibleCount = 0;
 
         originalCards.forEach(card => {
@@ -66,7 +67,10 @@ document.addEventListener("DOMContentLoaded", () => {
         sortedCards.forEach(card => container.appendChild(card));
     }
 
-    searchInput.addEventListener("input", filterQuizs);
-    mineCheckbox.addEventListener("change", filterQuizs);
-    sortSelect.addEventListener("change", sortQuizs);
+    if (searchInput) searchInput.addEventListener("input", filterQuizs);
+    if (sortSelect) sortSelect.addEventListener("change", sortQuizs);
+
+    if (mineCheckbox) {
+        mineCheckbox.addEventListener("change", filterQuizs);
+    }
 });

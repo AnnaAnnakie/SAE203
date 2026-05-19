@@ -7,10 +7,7 @@ $query = "SELECT q.*, u.username AS creator_name
           JOIN sae203_user u ON q.creator = u.id";
 $result = getInfoDataBase($query);
 
-
-if ($_SESSION['user']) {
-    $current_username = $_SESSION['user']['username'];
-}
+$current_username = $_SESSION['user']['username'] ?? null;
 ?>
 
 <!DOCTYPE html>
@@ -31,16 +28,16 @@ if ($_SESSION['user']) {
             <h1>Explorez les Quizs</h1>
             <p class="subtitle">Prêt à tester vos connaissances et marquer le meilleur score ?</p>
         </div>
-        <?php if (isset($_SESSION['user'])) { ?>
-        <a href="edit.php" class="btn-create">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            Créer un quiz
-        </a>
-        <?php }?>
+        <?php if ($current_username): ?>
+            <a href="edit.php" class="btn-create">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Créer un quiz
+            </a>
+        <?php endif; ?>
     </div>
 
     <div class="filter-bar">
@@ -55,27 +52,27 @@ if ($_SESSION['user']) {
                 <option value="author-asc">Auteur (A-Z)</option>
             </select>
 
-            <?php if (isset($current_username)) {
-                echo <<< EOD
-            <label class="checkbox-filter">
-                <input type="checkbox" id="mine-checkbox">
-                Mes quiz uniquement
-            </label>
-            EOD;
-            }
-            ?>
+            <?php if ($current_username): ?>
+                <label class="checkbox-filter">
+                    <input type="checkbox" id="mine-checkbox">
+                    Mes quiz uniquement
+                </label>
+            <?php endif; ?>
         </div>
     </div>
 
     <div id="container">
-        <?php
-        if (empty($result)): ?>
+        <?php if (empty($result)): ?>
             <div class="empty-state">
                 <p>Aucun quiz n'est disponible pour le moment. Soyez le premier à en créer un !</p>
             </div>
-        <?php else:
-            foreach ($result as $quiz) {
-                $isCreator = ($quiz['creator_name'] === $current_username);
+        <?php else: ?>
+            <?php foreach ($result as $quiz):
+                // Initialisation par défaut pour éviter l'erreur de variable indéfinie
+                $isCreator = false;
+                if ($current_username) {
+                    $isCreator = ($quiz['creator_name'] === $current_username);
+                }
                 ?>
                 <div class="quiz-card"
                      data-name="<?= htmlspecialchars(strtolower($quiz['name'])) ?>"
@@ -101,16 +98,14 @@ if ($_SESSION['user']) {
                                  fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                  stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
                         </a>
                     </div>
                 </div>
-                <?php
-            }
-        endif;
-        ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
         <div id="no-match-state" class="empty-state" style="display: none;">
             <p>Aucun quiz ne correspond à vos critères de recherche.</p>
         </div>
