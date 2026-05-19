@@ -344,6 +344,22 @@ main.result-main {
         box-shadow: 0 10px 25px var(--shadow);
     }
 
+    .guest-notice {
+        margin: 20px 0;
+        padding: 15px;
+        background: var(--bg);
+        border: 1px dashed var(--amber-glow);
+        border-radius: 8px;
+        font-size: .95rem;
+        opacity: 0.8;
+
+        a {
+            color: var(--blue-bell);
+            text-decoration: underline;
+
+        }
+    }
+
     .btn-primary {
         display: inline-flex;
         justify-content: center;

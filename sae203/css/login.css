@@ -3,6 +3,7 @@ main {
     width: 100%;
     margin: 40px auto;
     padding: 0 20px;
+    box-sizing: border-box;
 }
 
 h1 {
@@ -54,22 +55,29 @@ h1 {
     }
 
     button[type="submit"] {
-        background: var(--amber-glow);
         border: none;
-        padding: 12px;
-        border-radius: 6px;
-        font-size: 1rem;
-        font-weight: 500;
+        background: linear-gradient(135deg, var(--orange) 0%, var(--amber-glow) 100%);
+        color: var(--white);
+        padding: 16px 40px;
+        border-radius: 12px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        box-shadow: 0 6px 20px rgba(236, 117, 21, 0.3);
+
         cursor: pointer;
         margin-top: auto;
-        transition: background-color 0.2s ease;
+        transition: all 0.2s ease;
+        width: 100%;
+        box-sizing: border-box;
 
         &:hover {
-            background: var(--orange);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(236, 117, 21, 0.4);
+            background: linear-gradient(135deg, var(--orange) 0%, var(--amber-glow) 100%); /* Fix pour garder le dégradé au survol */
         }
 
         &:active {
-            background: var(--mustard);
+            transform: translateY(0);
         }
     }
 }
@@ -78,7 +86,7 @@ h1 {
     position: relative;
     width: 100%;
     display: flex;
-    align-items: center;
+    flex-direction: column;
 
     input {
         width: 100%;
@@ -96,26 +104,25 @@ h1 {
     cursor: pointer;
     display: flex;
     justify-content: center;
+    align-items: center;
     user-select: none;
     z-index: 5;
 
-    .toggle-password svg {
-        width: 100%;
-        height: 100%;
-        color: #9ca3af; /* Couleur grise neutre par défaut */
-        transition: color 0.2s ease, transform 0.1s ease;
-    }
-    &:hover svg {
+    svg {
         width: 100%;
         height: 100%;
         color: #9ca3af;
         transition: color 0.2s ease, transform 0.1s ease;
     }
+
+    &:hover svg {
+        color: var(--yale-blue);
+    }
+
     svg.hidden {
         display: none !important;
     }
 }
-
 
 .error {
     background-color: var(--light-grey);
@@ -132,4 +139,27 @@ hr {
     border: none;
     border-left: 1px solid var(--light-grey);
     margin: 0;
+}
+
+@media (max-width: 768px) {
+    main {
+        margin: 20px auto;
+    }
+
+    #forms {
+        flex-direction: column;
+        gap: 30px;
+        padding: 30px 20px;
+    }
+
+    hr {
+        border-left: none;
+        border-top: 1px solid var(--light-grey);
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .form button[type="submit"] {
+        margin-top: 10px;
+    }
 }

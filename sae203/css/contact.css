@@ -1,0 +1,168 @@
+/* Container principal centré reprenant le même padding que tes pages de quiz */
+.contact-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Structure calquée exactement sur ton 'fieldset' de quiz */
+.contact-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    border: 1px solid var(--light-grey);
+    border-radius: 24px;
+    background-color: var(--white);
+    padding: 3rem 2rem 2rem 2rem;
+    width: 100%;
+    max-width: 45rem;
+    box-shadow: 0 10px 25px var(--shadow);
+    box-sizing: border-box;
+}
+
+/* Titre principal utilisant ton coloris 'space-indigo' */
+.contact-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    width: 100%;
+}
+
+.contact-header h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--space-indigo);
+    margin: 0 0 0.75rem 0;
+}
+
+.contact-header p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #4b5563; /* Aligné sur la couleur du sous-titre du score-box */
+    margin: 0;
+}
+
+/* Formulaire calqué sur la structure interne de tes questions (#reponses) */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 35rem; /* Aligné sur la largeur .question */
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--space-indigo);
+}
+
+/* Inputs & Textarea utilisant le design de tes blocs de questions */
+.contact-form input[type="email"],
+.contact-form textarea {
+    width: 100%;
+    padding: 14px 20px;
+    border: 2px solid var(--light-grey);
+    border-radius: 14px; /* Même arrondi que tes .question */
+    background-color: var(--white);
+    font-family: inherit;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--space-indigo);
+    transition: all 0.2s ease-in-out;
+    box-sizing: border-box;
+}
+
+/* Comportement au survol (Amber glow discret) */
+.contact-form input[type="email"]:hover,
+.contact-form textarea:hover {
+    border-color: var(--amber-glow);
+    background-color: rgba(255, 159, 28, 0.01);
+}
+
+/* Comportement au focus calqué sur le style actif ':has(.checkbox:checked)' */
+.contact-form input[type="email"]:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--blue-bell);
+    background-color: rgba(64, 159, 221, 0.02);
+    box-shadow: 0 0 0 4px rgba(64, 159, 221, 0.1);
+}
+
+.contact-form textarea {
+    resize: vertical;
+    min-height: 8rem;
+}
+
+/* Bouton d'envoi calqué sur ton bouton d'action principal (Amber Glow -> Orange) */
+.btn-submit {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    border: none;
+
+    background: linear-gradient(135deg, var(--orange) 0%, var(--amber-glow) 100%);
+    color: var(--white);
+    padding: 16px 40px;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    box-shadow: 0 6px 20px rgba(236, 117, 21, 0.3);
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 1rem;
+    width: auto;
+}
+
+.btn-submit svg {
+    transition: transform 0.2s ease;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(236, 117, 21, 0.4);
+}
+
+.btn-submit:hover svg {
+    transform: translate(2px, -2px);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+/* --- RESPONSIVE WORK --- */
+@media (max-width: 768px) {
+    .contact-container {
+        padding: 1.5rem 1rem;
+    }
+
+    .contact-card {
+        padding: 2.5rem 1.25rem 1.5rem 1.25rem;
+    }
+
+    .contact-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .form-group {
+        max-width: 100%;
+    }
+
+    .btn-submit {
+        width: 100%; /* S'adapte en largeur sur mobile comme tes boutons de quiz */
+    }
+}

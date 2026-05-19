@@ -1,14 +1,14 @@
 <?php
 session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/php/utils.php";
-$sql_file = 'init.sql';
+$sql_file = 'admin/init.sql';
 
 try {
     $pdo = getPDOConnection();
     $sql_content = file_get_contents($sql_file);
     $pdo->exec($sql_content);
 
-    header('Location: ../index.php');
+    header('Location: index.php');
     exit;
 
 } catch (PDOException $e) {

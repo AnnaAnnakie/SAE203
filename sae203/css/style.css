@@ -50,59 +50,55 @@ header {
     box-shadow: 0 1px 3px var(--shadow);
     top: 0;
 
-    #search-bar {
+    .logo-container {
         display: flex;
         align-items: center;
+        transition: transform 0.2s ease-in-out;
+
+        &:hover {
+            transform: scale(1.02);
+        }
+    }
+
+    .nav-menu {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+    }
+
+    .nav-links {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: 25px;
+    }
+
+    .nav-item {
+        text-decoration: none;
+        color: var(--space-indigo);
+        font-weight: 600;
+        font-size: 1.05rem;
         position: relative;
-        margin: 0 24px;
-        border-radius: 2rem;
-        height: 3rem;
-        width: 100%;
-        max-width: 500px;
+        padding: 5px 0;
+        transition: color 0.2s ease;
 
-        input {
-            font-size: 1rem;
-            padding: 0 45px 0 20px;
-            border: solid 2px var(--amber-glow);
-            border-radius: 2rem;
-            height: 100%;
-            width: 100%;
-            transition: all 0.2s ease-in-out;
-            outline: none;
-
-            &:hover {
-                box-shadow: 0 4px 12px var(--shadow-hover);
-            }
-
-            &:focus {
-                border-color: var(--blue-bell);
-                box-shadow: 0 4px 12px rgba(64, 159, 221, 0.15);
-            }
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--orange);
+            transition: width 0.2s ease;
         }
 
-        button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            background-color: transparent;
-            border: none;
-            right: 5px;
-            height: calc(100% - 10px);
-            aspect-ratio: 1/1;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.2s;
+        &:hover {
+            color: var(--orange);
 
-            &:hover {
-                background-color: var(--bg);
-            }
-
-            svg {
-                fill: var(--amber-glow);
-                width: 45%;
-                height: 45%;
-                transition: fill 0.2s;
+            &::after {
+                width: 100%;
             }
         }
     }
@@ -136,6 +132,38 @@ header {
                     background-color: var(--light-blue);
                     border-color: var(--light-blue);
                 }
+            }
+        }
+    }
+
+    .user-profile-badge {
+        background-color: var(--bg);
+        border: 1px solid var(--light-grey);
+        padding: 0 16px !important;
+        height: 2.5rem;
+        border-radius: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .online-indicator {
+            width: 8px;
+            height: 8px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        #logged {
+            border: none !important;
+            padding: 0 !important;
+            height: auto !important;
+
+            &:hover {
+                background: transparent !important;
+                color: var(--blue-bell) !important;
+                box-shadow: none !important;
+                opacity: 0.8;
             }
         }
     }
@@ -235,20 +263,42 @@ footer {
         font-weight: 500;
         color: var(--space-indigo);
     }
-
 }
 
 @media (max-width: 768px) {
     header {
-        padding: 0 1rem 12px 1rem;
+        padding: 1.5rem 1rem;
         flex-direction: column;
         height: auto;
-        gap: 12px;
+        gap: 1.5rem;
 
-        #search-bar {
-            margin: 0;
-            max-width: 100%;
-            order: 3;
+        .nav-menu {
+            flex-direction: column;
+            gap: 1.25rem;
+            width: 100%;
+        }
+
+        .nav-links {
+            width: 100%;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        #connexion, #connected {
+            width: 100%;
+            justify-content: center;
+        }
+
+        #log-in {
+            width: 100%;
+            max-width: 250px;
+            justify-content: center;
+        }
+
+        .user-profile-badge {
+            width: 100%;
+            max-width: 250px;
+            justify-content: center;
         }
     }
 

@@ -2,13 +2,8 @@
 session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/php/utils.php";
 
-if (!isset($_SESSION['user'])) {
-    header("Location: /sae203/login.php");
-    exit;
-}
-
 $quiz = isset($_GET['quizId']) ? (int)$_GET['quizId'] : 0;
-$userId = (int)$_SESSION['user']['id'];
+$userId = isset($_SESSION['user']['id']) ? (int)$_SESSION['user']['id'] : null;
 
 if ($quiz <= 0) {
     header("Location: catalogue.php");
@@ -51,7 +46,8 @@ foreach ($allScores as $scoreRow) {
         ];
     }
 
-    if ((int)$scoreRow['user'] === $userId) {
+    // Le classement de l'utilisateur n'est cherché que s'il est connecté
+    if ($userId && (int)$scoreRow['user'] === $userId) {
         if ($userRank === null) {
             $userRank = $rank;
             $userBestScore = $scoreRow['score'];
@@ -84,7 +80,7 @@ foreach ($allScores as $scoreRow) {
 
         <div class="cta-zone">
             <?php if ($hasQuestions): ?>
-                <a href="questions.php?quizId=<?= $quiz ?>" class="btn btn-start">Commencer le Quiz 🚀</a>
+                <a href="questions.php?quizId=<?= $quiz ?>" class="btn btn-start">Commencer le Quiz ?</a>
             <?php else: ?>
                 <div class="alert-empty">⚠️ Aucune question n'est disponible pour ce quiz actuellement.</div>
             <?php endif; ?>
@@ -108,8 +104,11 @@ foreach ($allScores as $scoreRow) {
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($top10 as $player): ?>
-                        <tr class="<?= ($player['username'] === $_SESSION['user']['username']) ? 'row-current-user' : '' ?>">
+                    <?php foreach ($top10 as $player):
+                        // Surlignage uniquement si l'utilisateur est connecté et qu'il s'agit de sa ligne
+                        $isMe = ($userId && isset($_SESSION['user']['username']) && $player['username'] === $_SESSION['user']['username']);
+                        ?>
+                        <tr class="<?= $isMe ? 'row-current-user' : '' ?>">
                             <td class="rank-cell">
                                 <?php if ($player['rank'] == 1): ?> 🥇
                                 <?php elseif ($player['rank'] == 2): ?> 🥈
@@ -124,14 +123,14 @@ foreach ($allScores as $scoreRow) {
                                     <?php else: ?>
                                         <img src="assets/defaultPP.jpg" class="table-avatar" alt="Avatar">
                                     <?php endif; ?>
-                                    <span class="player-name"><?= htmlspecialchars($player['username']) ?></span>
+                                    <span class="player-name"><?= htmlspecialchars($player['username']) ?><?= $isMe ? ' (Vous)' : '' ?></span>
                                 </div>
                             </td>
-                            <td class="score-cell"><strong><?= $player['score'] ?></strong> pts</td>
+                            <td class="score-cell"><strong><?= number_format($player['score'], 2) ?></strong> pts</td>
                         </tr>
                     <?php endforeach; ?>
 
-                    <?php if ($userRank !== null && $userRank > 10): ?>
+                    <?php if ($userId && $userRank !== null && $userRank > 10): ?>
                         <tr class="separator-row"><td colspan="3">...</td></tr>
                         <tr class="row-current-user">
                             <td class="rank-cell"><?= $userRank ?></td>
@@ -145,14 +144,14 @@ foreach ($allScores as $scoreRow) {
                                     <span class="player-name"><?= htmlspecialchars($_SESSION['user']['username']) ?> (Vous)</span>
                                 </div>
                             </td>
-                            <td class="score-cell"><strong><?= $userBestScore ?></strong> pts</td>
+                            <td class="score-cell"><strong><?= number_format($userBestScore, 2) ?></strong> pts</td>
                         </tr>
                     <?php endif; ?>
                     </tbody>
                 </table>
             <?php else: ?>
                 <div class="empty-leaderboard">
-                    💡 Soyez le premier à participer pour ouvrir le classement de ce quiz !
+                    ✨ Soyez le premier à participer pour ouvrir le classement de ce quiz !
                 </div>
             <?php endif; ?>
         </div>
