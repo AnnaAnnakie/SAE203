@@ -56,12 +56,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_avatar'])) {
 
 // Supprimer un compte
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_delete_account'])) {
-    $userId = $_SESSION['user']['id'];
+    $userId = $_SESSION['user']['user_id'];
     $queryUser = "SELECT admin FROM sae203_user WHERE id = $userId";
     $userData = getInfoDataBase($queryUser)[0];
 
     // Un admin n'a pas le droit de s'auto-supprimer ici
-    if (!$userData['admin']) {
+    if ($userData['admin'] != 1) {
         // Nettoyage des résultats de quiz liés à l'utilisateur
         getInfoDataBase("DELETE FROM sae203_resultat WHERE user = $userId");
         // Suppression de l'utilisateur

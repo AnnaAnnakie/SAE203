@@ -2,7 +2,6 @@
 session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/php/utils.php";
 
-// Optionnel : On récupère l'email de l'utilisateur connecté pour lui pré-remplir le champ
 $userEmail = $_SESSION['user']['email'] ?? '';
 ?>
 
@@ -22,7 +21,7 @@ $userEmail = $_SESSION['user']['email'] ?? '';
     <div class="contact-card">
         <div class="contact-header">
             <h1>Une question ? <span class="text-gradient">Contactez-nous</span></h1>
-            <p>Une suggestion, un bug à signaler ou juste un mot doux ? Laissez-nous un message !</p>
+            <p>Une suggestion, un bug à signaler ou juste un mot doux ? Laisse moi un message !</p>
         </div>
 
         <form action="https://formspree.io/f/xdajkvlg" method="POST" class="contact-form">
